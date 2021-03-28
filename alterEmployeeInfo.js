@@ -2,107 +2,117 @@ const mysql = require('mysql');
 const inquirer = require('inquirer');
 const cTable = require('console.table');
 
+console.table([
+  {  
+    name: 'morgan',
+    age: 30
+  }
+])
+
+
 
 const connection = mysql.createConnection({
-  host: 'localhost',
+    host: 'localhost',
 
-  // Your port; if not 3306
-  port: 3306,
+    // Your port; if not 3306
+    port: 3306,
 
-  // Your username
-  user: 'root',
+    // Your username
+    user: 'root',
 
-  // Be sure to update with your own MySQL password!
-  password: 'Sept172021',
-  database: 'Employee_Management',
+    // Be sure to update with your own MySQL password!
+    password: 'Sept172021',
+    database: 'Employee_Management',
 });
+
 
 connection.connect((err) => {
-  if (err) throw err;
-  runSearch();
+    if (err) throw err;
+    runProgram();
+    connection.end();
 });
 
-const runSearch = () => {
-  inquirer
-    .prompt({
-      name: 'action',
-      type: 'rawlist',
-      message: 'What would you like to do?',
-      choices: [
-        'Add',
-        'View',
-        'Update',
-      ],
-    })
-    .then((answer) => {
-      switch (answer.action) {
-        case 'Add':
-          add();
-          break;
+const runProgram = () => {
+    inquirer
+        .prompt({
+            name: 'action',
+            type: 'rawlist',
+            message: 'What would you like to do?',
+            choices: [
+                'Add an employee',
+                'Add a department',
+                'Add a role',
+                'View all departments',
+                'View all roles',
+                'View all employees',
+                'Update employee role',
+            ],
+        })
+        .then((answer) => {
+            switch (answer.action) {
+                case 'Add an employee':
+                    addEmployee();
+                    break;
 
-        case 'View':
-          view();
-          break;
+                case 'Add a department':
+                    addDepartment();
+                    break;
 
-        case 'Update':
-          update();
-          break;
+                case 'Add a role':
+                    addRole();
+                    break;
 
-        default:
-          console.log(`Invalid action: ${answer.action}`);
-          break;
-      }
-    });
+                case 'View all departments':
+                    viewDepartments();
+                    break;
+
+                case 'View all roles':
+                    viewRoles();
+                    break;
+
+                case 'View all employees':
+                    viewEmployees();
+                    break;
+
+                case 'Update employee role':
+                    updateRole();
+                    break;
+
+                default:
+                    console.log(`Invalid action: ${answer.action}`);
+                    break;
+            }
+        });
 };
 
-const add = () => {
+const addEmployee = () => {
     console.log('added');
-  inquirer
-    .prompt({
-      name: 'add',
-      type: 'rawlist',
-      message: 'What would you like to add?',
-      choices: [
-        'Department',
-        'Role',
-        'Employee',
-      ],
-    })
-    .then((answer) => {
-      switch (answer.add) {
-        case 'Department':
-            console.log('department')
-          //addDepartment();
-          break;
-
-        case 'Role':
-            console.log('role');
-          //addRole();
-          break;
-
-        case 'Employee':
-            console.log('employee');
-          //addEmployee();
-          break;
-
-        default:
-          console.log(`Invalid action: ${answer.add}`);
-          break;
-      }
-    });
+    inquirer
+        .prompt({
+            name: 'firstname',
+            type: 'input',
+            message: 'What is the first name of the employee?',
+        })
+        .then((answer) => {
+            const query = 'INSERT INTO employees (firstname) VALUES ?';
+            connection.query(query, { first_name: answer.firstname }, (err, res) => {
+               console.table(answer);
+               runProgram(;)
+            });
+        });
 };
 
-// const addDepartment = () => {
-//     inquirer
-//       .prompt({
-//           name: 'department',
-//           type: 'input',
-//           message: 'Enter the departments name',
-//       })
-//       .then((answer) => {
-//           console.log(answer.department);
-//       })
-
+const addDepartment = () => {
+    inquirer
+        .prompt({
+            name: 'department',
+            type: 'input',
+            message: 'Enter the departments name',
+        })
+        .then((answer) => {
+            console.log(answer.department);
+        })
+}
 
 
 const view = () => {
@@ -236,4 +246,4 @@ const update = () => {
 //         runSearch();
 //       });
 //     });
-// };
+// 
