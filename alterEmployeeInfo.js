@@ -1,10 +1,11 @@
+//required connections
 const mysql = require('mysql');
 const inquirer = require('inquirer');
 const cTable = require('console.table');
 const { restoreDefaultPrompts } = require('inquirer');
 
-
-
+//setting up the server to connect to mysql
+//add in your own user and password
 const connection = mysql.createConnection({
     host: 'localhost',
     port: 3306,
@@ -17,9 +18,9 @@ const connection = mysql.createConnection({
 connection.connect((err) => {
     if (err) throw err;
     runProgram();
-    //connection.end();
 });
 
+//this function prompts the user to decide what action they want to take to add view or update the database
 const runProgram = () => {
     inquirer
         .prompt({
@@ -73,6 +74,7 @@ const runProgram = () => {
         });
 };
 
+//this function allows you to add an employee through inquirer and mysql
 const addEmployee = () => {
     inquirer
     .prompt([
@@ -108,6 +110,7 @@ const addEmployee = () => {
     });
 }; 
 
+//this function allows you to add a department through inquirer and mysql
 const addDepartment = () => {
     inquirer
     .prompt([
@@ -130,6 +133,8 @@ const addDepartment = () => {
     })
 }
 
+
+//this function allows you to add a role through inquirer and mysql
 const addRole = () => {
     inquirer
     .prompt([
@@ -164,6 +169,8 @@ const addRole = () => {
     })
 }
 
+
+//this function allows you to view all departments
 const viewDepartments = () => {
     connection.query('SELECT * FROM department', (err, result) => {
         if (err) throw err;
@@ -172,6 +179,7 @@ const viewDepartments = () => {
     })
 }
 
+//this function allows you to view all roles
 const viewAllRoles = () => {
     connection.query('SELECT * FROM role', (err, result) => {
         if (err) throw err;
@@ -180,7 +188,7 @@ const viewAllRoles = () => {
     })
 }
 
-
+//this function allows you to view all employees
 const viewAllEmployees = () => {
     connection.query('SELECT * FROM employee', (err, result) => {
         if (err) throw err;
@@ -189,7 +197,7 @@ const viewAllEmployees = () => {
     })
 }
 
-
+//this function allows you to update an employees role
 const updateRole = () => {
     connection.query('SELECT * FROM employee', (err, result) => {
         if (err) throw err;
