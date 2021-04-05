@@ -1,6 +1,7 @@
 const mysql = require('mysql');
 const inquirer = require('inquirer');
 const cTable = require('console.table');
+const { restoreDefaultPrompts } = require('inquirer');
 
 
 
@@ -189,10 +190,55 @@ const viewAllEmployees = () => {
 }
 
 
-// const updateRole = () => {
-//     connection.query('SELECT * FROM department', (err, result) => {
-//         if (err) throw err;
-//         console.table(result);
-//         runProgram();
-//     })
-// }
+const updateRole = () => {
+    connection.query('SELECT * FROM employee', (err, result) => {
+        if (err) throw err;
+        inquirer
+        .prompt([
+            {
+                name: 'choice',
+                type: 'rawlist',
+                choices() {
+                    const choicesArray = [];
+                    result.forEach(({ first_name }) => {
+                        choicesArray.push(first_name);
+                    });
+                    return choicesArray;
+                },
+                message: 'Choose the employee you want to update.',
+            },
+            {
+                name: 'updateRoleId',
+                type: 'input',
+                message: 'What is the new roleid?',
+            },
+        ]).then((answer) => {
+            let newID;
+            result.forEach((role_id) => {
+                if(role_id.first_name === answer.choice) {
+                    newID = role_id;
+                }
+            });
+            if(parseInt(answer.updateRoleId)) {
+                connection.query('UPDATE employee SET ? WHERE ?',
+                [
+                    {
+                        role_id: answer.updateRoleId,
+                    },
+                    {
+                        id: newID.id,
+                    },
+                ],
+                (error) => {
+                    if(error) throw err;
+                    console.log('new roleid updated.');
+                    runProgram();
+                }
+                );
+            } else {
+                console.log('please try again');
+                runProgram();
+            }
+        });
+    });
+};
