@@ -8,7 +8,6 @@
   ## table of Contents
   * [Installation](#installation)
   * [Liscense](#liscense)
-  * [Video](#video)
   * [Questions](#questions)
 
   ## Installation
@@ -17,10 +16,6 @@
   ## License
   MIT
  
-
-  ## Video
-  
-
   ## Questions
   Please conact me with any questions
   Github profile: https://github.com/morganleighfranke
