@@ -53,13 +53,12 @@ const runProgram = () => {
                     viewDepartments();
                     break;
 
-                case 'View all roles':
-                console.log('it works');    
+                case 'View all roles':   
                 viewAllRoles();
                     break;
 
                 case 'View all employees':
-                    findAllEmployees();
+                    viewAllEmployees();
                     break;
 
                 case 'Update employee role':
@@ -164,24 +163,36 @@ const addRole = () => {
     })
 }
 
-// const addDepartment = () => {
-//     inquirer
-//     .prompt([
-//         {
-//             type: 'input',
-//             name: 'departmentname',
-//             message: 'What is the name of the department?'
-//         },
-//     ]).then((answer) => {
-//         connection.query( 'INSERT INTO department SET ?',
-//         {
-//             name: answer.departmentname,
-//         },
-//         (err) => {
-//             if(err) throw err;
-//             console.log('new deparment added');
-//             runProgram();
-//         }
-//         )
+const viewDepartments = () => {
+    connection.query('SELECT * FROM department', (err, result) => {
+        if (err) throw err;
+        console.table(result);
+        runProgram();
+    })
+}
+
+const viewAllRoles = () => {
+    connection.query('SELECT * FROM role', (err, result) => {
+        if (err) throw err;
+        console.table(result);
+        runProgram();
+    })
+}
+
+
+const viewAllEmployees = () => {
+    connection.query('SELECT * FROM employee', (err, result) => {
+        if (err) throw err;
+        console.table(result);
+        runProgram();
+    })
+}
+
+
+// const updateRole = () => {
+//     connection.query('SELECT * FROM department', (err, result) => {
+//         if (err) throw err;
+//         console.table(result);
+//         runProgram();
 //     })
 // }
